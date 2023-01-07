@@ -11,11 +11,22 @@
 //   }
 // }
 
-import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Get,
+  Body,
+} from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
+import { Roles } from './auth/decorators/roles.decorator';
+import { Role } from './auth/enums/role.enum';
+import { CreateUserDto } from './users/create-user.dto';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Controller()
 export class AppController {
@@ -28,8 +39,23 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('auth/logout')
+  async logout(@Request() req) {
+    return this.authService.logout(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
+  @Post('create-profile')
+  create(@Body() createUserDto: CreateUserDto) {
+    console.log('In createuser');
+    // this.usersService.create(createUserDto);
   }
 }
