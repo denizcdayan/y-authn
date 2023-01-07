@@ -41,12 +41,6 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('auth/logout')
-  async logout(@Request() req) {
-    return this.authService.logout(req.user);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
@@ -54,10 +48,22 @@ export class AppController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('create-user')
-  async create(@Request() req) {
-    // @Body() createUserDto: CreateUserDto
-    return console.log('In createuser');
-    // this.usersService.create(createUserDto);
+  @Get('admin-only-route')
+  async adminOnlyContr(@Request() req) {
+    return console.log('In adminOnlyContr');
+  }
+
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('user-only-route')
+  async userOnlyContr(@Request() req) {
+    return console.log('In userOnlyContr');
+  }
+
+  @Roles(Role.Admin, Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('all-roles-route')
+  async allRolesContr(@Request() req) {
+    return console.log('In allRolesContr');
   }
 }

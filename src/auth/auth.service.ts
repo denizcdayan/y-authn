@@ -28,9 +28,4 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
-
-  async logout(user: any) {
-    user = null; // deneme
-    console.log('in AuthService.logout()');
-  }
 }
