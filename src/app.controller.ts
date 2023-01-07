@@ -27,7 +27,9 @@ import { Roles } from './auth/decorators/roles.decorator';
 import { Role } from './auth/enums/role.enum';
 import { CreateUserDto } from './users/create-user.dto';
 import { RolesGuard } from './auth/guards/roles.guard';
+import { UsersModule } from './users/users.module';
 
+// @UseGuards(RolesGuard)
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
@@ -51,11 +53,11 @@ export class AppController {
   }
 
   @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(RolesGuard)
-  @Post('create-profile')
-  create(@Body() createUserDto: CreateUserDto) {
-    console.log('In createuser');
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('create-user')
+  async create(@Request() req) {
+    // @Body() createUserDto: CreateUserDto
+    return console.log('In createuser');
     // this.usersService.create(createUserDto);
   }
 }

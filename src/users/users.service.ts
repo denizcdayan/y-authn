@@ -25,7 +25,7 @@ export class UsersService {
     return this.users.find((user) => user.username === username);
   }
 
-  create() {
-    console.log('inside UsersService.create()');
+  async create() {
+    return console.log('inside UsersService.create()');
   }
 }

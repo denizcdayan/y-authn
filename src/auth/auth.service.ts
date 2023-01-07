@@ -12,20 +12,25 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
     if (user && user.password === pass) {
-      const { password, ...result } = user;
+      const { password, ...result } = user; // do not send password
       return result;
     }
     return null;
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = {
+      username: user.username,
+      sub: user.userId,
+      roles: user.roles,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
   async logout(user: any) {
+    user = null; // deneme
     console.log('in AuthService.logout()');
   }
 }

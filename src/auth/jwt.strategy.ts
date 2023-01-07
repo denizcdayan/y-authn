@@ -20,7 +20,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // we can insert some business logic in here
     // e.g: put more info to our user object (created automatically by passport)
 
-    return { userId: payload.sub, username: payload.username };
+    console.log('__JwtStrategy.validate()___ payload: ', payload);
+    return {
+      userId: payload.sub,
+      username: payload.username,
+      roles: payload.roles,
+    };
   }
 }
 
