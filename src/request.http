@@ -55,7 +55,7 @@ Authorization: Bearer {{token}}
 GET http://localhost:3000/profile HTTP/1.1
 Authorization: Bearer {{token}}
 
-### GET USER ONLY
+### GET USER ONLY - 
 GET http://localhost:3000/user-only-route HTTP/1.1
 Authorization: Bearer {{token}}
 
