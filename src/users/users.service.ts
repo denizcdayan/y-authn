@@ -6,7 +6,7 @@ export type User = {
   userId: number;
   username: string;
   email: string;
-  password: string;
+  // password: string;
   roles: Role;
 };
 
@@ -23,14 +23,14 @@ export class UsersService {
       userId: 1,
       username: 'john',
       email: 'john@mail.com',
-      password: 'changeme',
+      // password: 'changeme',
       roles: Role['Admin'],
     },
     {
       userId: 2,
       username: 'maria',
       email: 'maria@mail.com',
-      password: 'guess',
+      // password: 'guess',
       roles: Role['User'],
     },
   ];
@@ -44,7 +44,7 @@ export class UsersService {
     return console.log('inside UsersService.create()');
   }
 
-  async addUser(newUser: User) {
+  async addUser(newUser: any) {
     console.log('inside UsersService.addUser()');
     newUser.userId = this.users.length + 1;
     newUser.roles = Role.User;

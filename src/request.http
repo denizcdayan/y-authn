@@ -86,12 +86,12 @@ Content-Type: application/json
   "email": "tesla@ldap.forumsys.com"
 }
 
-### LOGIN ---NEW--- USER (TESLA)
-POST http://localhost:3000/auth/login HTTP/1.1
-Content-Type: application/json
+# ### LOGIN ---NEW--- USER (TESLA)
+# POST http://localhost:3000/auth/login HTTP/1.1
+# Content-Type: application/json
 
-{
-  "username": "tesla",
-  "password": "password",
-  "email": "tesla@ldap.forumsys.com"
-}
+# {
+#   "username": "tesla",
+#   "password": "pasasdasdsword",
+#   "email": "tesla@ldap.forumsys.com"
+# }

@@ -49,15 +49,16 @@ export class AppController {
   @Post('signup')
   async signup(@Request() req) {
     console.log('in AppController.login(), user.email: ', req.body.email);
-    return this.authService.signup(req.body);
+    const { password, ...result } = req.body; // XXX: strip password manually
+    return this.authService.signup(result);
   }
 
-  @UseGuards(LocalAuthGuard) // returns user obj
-  @Post('auth/login')
-  async login(@Request() req) {
-    console.log('in AppController.login()');
-    return this.authService.login(req.user);
-  }
+  // @UseGuards(LocalAuthGuard) // returns user obj
+  // @Post('auth/login')
+  // async login(@Request() req) {
+  //   console.log('in AppController.login()');
+  //   return this.authService.login(req.user);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')

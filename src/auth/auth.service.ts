@@ -13,12 +13,26 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<any> {
     console.log('in AuthService.validateUser()');
     const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
+    // if (user && user.password === pass) {
+    if (user) {
       console.log('in AuthService.validateUser() ---> user validated');
-      const { password, email, roles, ...result } = user; // do not send password
+      // const { password, email, roles, ...result } = user; // do not send password
+      const { email, roles, ...result } = user; // do not send password
       return result;
     }
     console.log('in AuthService.validateUser() ---> user NOT validated');
+    return null;
+  }
+
+  async getUser(username: string): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    if (user) {
+      console.log('in AuthService.getUser() ---> user is found');
+      // const { password, email, roles, ...result } = user; // do not send password
+      const { email, roles, ...result } = user; // do not send password
+      return result;
+    }
+    console.log('in AuthService.getUser() ---> user is NOT found');
     return null;
   }
 
@@ -38,8 +52,10 @@ export class AuthService {
     const u = await this.usersService.findOne(user.username);
     if (!u) {
       await this.usersService.addUser(user);
-      const { password, ...result } = user;
+      const { result } = user;
       return result;
+    } else {
+      throw new NotAcceptableException('user already exists');
     }
 
     return null;

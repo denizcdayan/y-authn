@@ -39,6 +39,7 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
         };
 
         console.log('REQQQQ USERRR ISSS : ', req.user);
+        console.log('AND THE USERR ISSS : ', user);
 
         return done(null, user);
       },
