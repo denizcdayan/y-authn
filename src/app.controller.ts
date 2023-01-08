@@ -34,13 +34,14 @@ import { UsersModule } from './users/users.module';
 export class AppController {
   constructor(private authService: AuthService) {}
 
-  @Post('signup')
-  async signup(@Request() req) {
-    console.log('in AppController.login(), user.email: ', req.body.email);
-    return this.authService.signup(req.body);
-  }
+  // @UseGuards(LocalAuthGuard)
+  // @Post('signup')
+  // async signup(@Request() req) {
+  //   console.log('in AppController.login(), user.email: ', req.body.email);
+  //   return this.authService.signup(req.body);
+  // }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard) // returns user obj
   @Post('auth/login')
   async login(@Request() req) {
     console.log('in AppController.login()');
@@ -49,7 +50,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     console.log('in AppController.getProfile()');
     return req.user;
   }
@@ -60,7 +61,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('admin-only-route')
   async adminOnlyContr(@Request() req) {
-    return console.log('In adminOnlyContr, user is ', req.user.email);
+    return console.log('In adminOnlyContr, user role is ', req.user.roles);
   }
 
   @Roles(Role.User)

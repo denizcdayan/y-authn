@@ -2,10 +2,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { jwtConstants } from './constants';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -20,11 +21,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // we can insert some business logic in here
     // e.g: put more info to our user object (created automatically by passport)
 
+    console.log('__JwtStrategy.validate()___ enter');
     console.log('__JwtStrategy.validate()___ payload: ', payload);
+
+    const urole = await this.authService.getUserRole(payload.username);
+    payload.roles = urole;
+
     return {
       userId: payload.sub,
       username: payload.username,
-      roles: payload.roles,
+      roles: urole,
     };
   }
 }
