@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -10,6 +10,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
+    console.log('in AuthService.validateUser()');
     const user = await this.usersService.findOne(username);
     if (user && user.password === pass) {
       const { password, ...result } = user; // do not send password
@@ -18,7 +19,26 @@ export class AuthService {
     return null;
   }
 
+  async signup(user: any) {
+    console.log('in AuthService.signup(), user: ', user);
+
+    const u = await this.usersService.findOne(user.email);
+    if (!u) {
+      await this.usersService.addUser(user);
+      return user;
+    }
+
+    return null;
+  }
+
   async login(user: any) {
+    console.log('in AuthService.login()');
+    // if first signin (and it is valid?), create the user
+    // const u = await this.usersService.findOne(user.email);
+    // if (!u) {
+    //   await this.usersService.addUser(u);
+    // }
+
     const payload = {
       username: user.username,
       sub: user.userId,

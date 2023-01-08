@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsInJvbGVzIjoiYWRtaW4iLCJpYXQiOjE2NzMxMjI5OTgsImV4cCI6MTY3MzY2Mjk5OH0.q_o4kwTGPDJAX0M3y4YjB5--nGgqnuUi8nkpyn5NUmA
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydCIsInN1YiI6Mywicm9sZXMiOiJ1c2VyIiwiaWF0IjoxNjczMTYyMjUyLCJleHAiOjE2NzMxNjIyNTd9.qBP3h6PNH7gtZg4Z5ZQ7kFaXzVMg5m9TobSfXaPCMJ4
 
 ### LOGIN ADMIN
 POST http://localhost:3000/auth/login HTTP/1.1
@@ -6,7 +6,8 @@ Content-Type: application/json
 
 {
   "username": "john",
-  "password": "changeme"
+  "password": "changeme",
+  "email": "john@mail.com"
 }
 
 ### LOGIN USER
@@ -15,7 +16,28 @@ Content-Type: application/json
 
 {
   "username": "maria",
-  "password": "guess"
+  "password": "guess",
+  "email": "maria@mail.com"
+}
+
+### SIGNUP ---NEW--- USER
+POST http://localhost:3000/signup HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "robert",
+  "password": "mypassword",
+  "email": "robert@mail.com"
+}
+
+### LOGIN ---NEW--- USER
+POST http://localhost:3000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "robert",
+  "password": "mypassword",
+  "email": "robert@mail.com"
 }
 
 ### CREATE PROFILE

@@ -25,7 +25,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Roles } from './auth/decorators/roles.decorator';
 import { Role } from './auth/enums/role.enum';
-import { CreateUserDto } from './users/create-user.dto';
+// import { CreateUserDto } from './users/create-user.dto';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { UsersModule } from './users/users.module';
 
@@ -34,23 +34,33 @@ import { UsersModule } from './users/users.module';
 export class AppController {
   constructor(private authService: AuthService) {}
 
+  @Post('signup')
+  async signup(@Request() req) {
+    console.log('in AppController.login(), user.email: ', req.body.email);
+    return this.authService.signup(req.body);
+  }
+
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
+    console.log('in AppController.login()');
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
+    console.log('in AppController.getProfile()');
     return req.user;
   }
+
+  // Dummy routes
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('admin-only-route')
   async adminOnlyContr(@Request() req) {
-    return console.log('In adminOnlyContr');
+    return console.log('In adminOnlyContr, user is ', req.user.email);
   }
 
   @Roles(Role.User)
