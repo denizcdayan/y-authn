@@ -1,6 +1,7 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import * as passport from 'passport';
 
 @Injectable()
 export class AuthService {
@@ -52,5 +53,9 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async ldapLogin() {
+    passport.authenticate('ldap', { session: false });
   }
 }

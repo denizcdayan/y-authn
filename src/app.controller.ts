@@ -28,11 +28,21 @@ import { Role } from './auth/enums/role.enum';
 // import { CreateUserDto } from './users/create-user.dto';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { UsersModule } from './users/users.module';
+import { LdapAuthGuard } from './auth/ldap-auth.guard';
 
 // @UseGuards(RolesGuard)
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
+
+  @UseGuards(LdapAuthGuard, LocalAuthGuard)
+  @Post('ldaplogin')
+  async ldapLogin(@Request() req) {
+    // passport.authenticate('ldap', { session: false });
+    this.authService.ldapLogin();
+    console.log(req.user);
+    return this.authService.login(req.user);
+  }
 
   // @UseGuards(LocalAuthGuard)
   @Post('signup')
