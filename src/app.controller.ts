@@ -45,6 +45,7 @@ export class AppController {
   }
 
   // @UseGuards(LocalAuthGuard)
+  @UseGuards(LdapAuthGuard)
   @Post('signup')
   async signup(@Request() req) {
     console.log('in AppController.login(), user.email: ', req.body.email);
