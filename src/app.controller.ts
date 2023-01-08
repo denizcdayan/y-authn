@@ -35,11 +35,11 @@ export class AppController {
   constructor(private authService: AuthService) {}
 
   // @UseGuards(LocalAuthGuard)
-  // @Post('signup')
-  // async signup(@Request() req) {
-  //   console.log('in AppController.login(), user.email: ', req.body.email);
-  //   return this.authService.signup(req.body);
-  // }
+  @Post('signup')
+  async signup(@Request() req) {
+    console.log('in AppController.login(), user.email: ', req.body.email);
+    return this.authService.signup(req.body);
+  }
 
   @UseGuards(LocalAuthGuard) // returns user obj
   @Post('auth/login')

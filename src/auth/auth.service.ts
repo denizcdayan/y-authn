@@ -31,18 +31,18 @@ export class AuthService {
     return null;
   }
 
-  // async signup(user: any) {
-  //   console.log('in AuthService.signup(), user: ', user);
+  async signup(user: any) {
+    console.log('in AuthService.signup(), user: ', user);
 
-  //   const u = await this.usersService.findOne(user.username);
-  //   if (!u) {
-  //     await this.usersService.addUser(user);
-  //     const { password, ...result } = user;
-  //     return result;
-  //   }
+    const u = await this.usersService.findOne(user.username);
+    if (!u) {
+      await this.usersService.addUser(user);
+      const { password, ...result } = user;
+      return result;
+    }
 
-  //   return null;
-  // }
+    return null;
+  }
 
   async login(user: any) {
     console.log('in AuthService.login(), user: ', user);

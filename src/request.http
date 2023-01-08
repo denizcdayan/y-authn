@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTY3MzE4NDc2OCwiZXhwIjoxNjczMTg0ODg4fQ.7ha3rHapMk_N1P71xgaIH2XRveRnwBbFFosoKiB8j3s
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydCIsInN1YiI6MywiaWF0IjoxNjczMTg2MDkxLCJleHAiOjE2NzMxODYyMTF9.r53xhQIf_YLJ6tkLqaQ_aqwyfuwLCiXjMNScWXwE5KA
 
 ### LOGIN ADMIN ---
 POST http://localhost:3000/auth/login HTTP/1.1
