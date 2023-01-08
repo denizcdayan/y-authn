@@ -25,7 +25,8 @@ export class AuthService {
     const u = await this.usersService.findOne(user.email);
     if (!u) {
       await this.usersService.addUser(user);
-      return user;
+      const { password, ...result } = user;
+      return result;
     }
 
     return null;
