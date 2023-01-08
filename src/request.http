@@ -1,6 +1,6 @@
 @token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsInJvbGVzIjoiYWRtaW4iLCJpYXQiOjE2NzMxNjMyMjIsImV4cCI6MTY3MzE2MzIyN30.JEFh8tFC3vqzOKtQ9q0d55-lONl6u_RbvXBZEqtDErk
 
-### LOGIN ADMIN
+### LOGIN ADMIN ---
 POST http://localhost:3000/auth/login HTTP/1.1
 Content-Type: application/json
 
