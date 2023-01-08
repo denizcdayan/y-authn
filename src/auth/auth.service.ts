@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    console.log('in AuthService.login()');
+    console.log('in AuthService.login(), user: ', user);
     // if first signin (and it is valid?), create the user
     // const u = await this.usersService.findOne(user.email);
     // if (!u) {
