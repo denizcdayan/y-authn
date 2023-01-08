@@ -8,19 +8,6 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
   constructor() {
     super(
       {
-        // 	passReqToCallback: true,
-        // 	server: {
-        // 		url: 'ldap://127.0.0.1:389',
-        // 		bindDN: 'root',
-        // 		bindCredentials: 'password',
-        // 		searchBase: 'o=users,o=example.com',
-        // 		searchFilter: '(uid={{username}})',
-        // 		searchAttributes: ['displayName', 'mail'],
-        // 	},
-        // }, async (req: Request, user: any, done) => {
-        // 	req.user = user;
-        // 	return done(null, user);
-        // });
         passReqToCallback: true,
         server: {
           url: 'ldap://ldap.forumsys.com:389',
@@ -32,14 +19,10 @@ export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
         },
       },
       async (req: Request, user: any, done) => {
-        // req.user = user;
         req.user = {
           username: user.uid,
           email: user.mail,
         };
-
-        console.log('REQQQQ USERRR ISSS : ', req.user);
-        console.log('AND THE USERR ISSS : ', user);
 
         return done(null, user);
       },

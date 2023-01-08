@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Role } from 'src/auth/enums/role.enum';
 
-// This should be a real class/interface representing a user entity
 export type User = {
   userId: number;
   username: string;
@@ -36,20 +35,13 @@ export class UsersService {
   ];
 
   async findOne(username: string): Promise<User | undefined> {
-    console.log('inside UsersService.findOne()');
     return this.users.find((user) => user.username === username);
   }
 
-  async create() {
-    return console.log('inside UsersService.create()');
-  }
-
   async addUser(newUser: any) {
-    console.log('inside UsersService.addUser()');
     newUser.userId = this.users.length + 1;
     newUser.roles = Role.User;
     this.users.push(newUser);
-    console.log(this.users);
     return true;
   }
 }

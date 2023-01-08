@@ -1,16 +1,3 @@
-// import { Controller, Get } from '@nestjs/common';
-// import { AppService } from './app.service';
-
-// @Controller()
-// export class AppController {
-//   constructor(private readonly appService: AppService) {}
-
-//   @Get()
-//   getHello(): string {
-//     return this.appService.getHello();
-//   }
-// }
-
 import {
   Controller,
   Request,
@@ -19,18 +6,16 @@ import {
   Get,
   Body,
 } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
+
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Roles } from './auth/decorators/roles.decorator';
 import { Role } from './auth/enums/role.enum';
-// import { CreateUserDto } from './users/create-user.dto';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { UsersModule } from './users/users.module';
 import { LdapAuthGuard } from './auth/ldap-auth.guard';
 
-// @UseGuards(RolesGuard)
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
@@ -38,13 +23,10 @@ export class AppController {
   @UseGuards(LdapAuthGuard, LocalAuthGuard)
   @Post('ldaplogin')
   async ldapLogin(@Request() req) {
-    // passport.authenticate('ldap', { session: false });
     this.authService.ldapLogin();
-    console.log(req.user);
     return this.authService.login(req.user);
   }
 
-  // @UseGuards(LocalAuthGuard)
   @UseGuards(LdapAuthGuard)
   @Post('signup')
   async signup(@Request() req) {
@@ -63,7 +45,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
-    console.log('in AppController.getProfile()');
     return req.user;
   }
 

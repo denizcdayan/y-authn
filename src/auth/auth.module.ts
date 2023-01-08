@@ -21,6 +21,3 @@ import { LdapStrategy } from './ldap.strategy';
   exports: [AuthService],
 })
 export class AuthModule {}
-
-// verify phase performed by Passport,
-// and the sign phase performed in our AuthService
