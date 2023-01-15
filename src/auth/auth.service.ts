@@ -18,6 +18,12 @@ export class AuthService {
       console.log('in AuthService.validateUser() ---> user validated');
       const { password, email, role, ...result } = user; // do not send password
       return result;
+    } else if (user.password === '' && user.isFromLdap === true) {
+      console.log(
+        'in AuthService.validateUser() ---> user validated (FROM LDAP)',
+      );
+      const { password, email, role, ...result } = user; // do not send password
+      return result;
     }
     console.log('in AuthService.validateUser() ---> user NOT validated');
     return null;

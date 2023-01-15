@@ -39,16 +39,13 @@ export class AuthController {
   @UseGuards(LocalAuthGuard) // returns user obj
   @Post('/login')
   async login(@Body() body: LoginUserDto) {
-    console.log('in AppController.login()');
-    return this.authService.login(body.username);
+    return await this.authService.login(body.username);
   }
 
   @UseGuards(LdapAuthGuard)
   @Post('ldap/signup')
   async ldapSignup(@Body() body: CreateLdapUserDto) {
-    console.log('in AppController.login(), user.email: ', body.email);
-    // return this.authService.ldapSignup(body);
-    return this.usersService.createLdapUser(body.email, body.username);
+    return await this.usersService.createLdapUser(body.email, body.username);
   }
 
   // @UseGuards(LdapAuthGuard)

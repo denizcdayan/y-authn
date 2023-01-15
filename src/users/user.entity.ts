@@ -20,12 +20,12 @@ export class User {
   // @Column()
   // surname: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   @Exclude()
-  password: string;
+  password?: string | null;
 
   // @Column()
   // roles: Role[];

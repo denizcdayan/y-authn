@@ -44,9 +44,14 @@ export class UsersService {
     return await this.repo.save(user);
   }
 
-  async createLdapUser(username: string, email: string) {
+  async createLdapUser(email: string, username: string) {
     const isFromLdap = true;
-    const user = this.repo.create({ username, email, isFromLdap });
+    const user = this.repo.create({
+      username,
+      email,
+      isFromLdap,
+      password: '',
+    });
 
     return await this.repo.save(user);
   }
