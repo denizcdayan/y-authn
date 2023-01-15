@@ -25,12 +25,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     console.log('__JwtStrategy.validate()___ payload: ', payload);
 
     const urole = await this.authService.getUserRole(payload.username);
-    payload.roles = urole;
+    payload.role = urole;
+
+    console.log('__JwtStrategy.validate()___ user role: ', urole);
 
     return {
-      userId: payload.sub,
       username: payload.username,
-      roles: urole,
+      role: urole,
     };
   }
 }
