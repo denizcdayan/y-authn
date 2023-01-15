@@ -44,6 +44,13 @@ export class UsersService {
     return await this.repo.save(user);
   }
 
+  async createLdapUser(username: string, email: string) {
+    const isFromLdap = true;
+    const user = this.repo.create({ username, email, isFromLdap });
+
+    return await this.repo.save(user);
+  }
+
   // TODO: delete this later
   async createAdmin(username: string, email: string, password: string) {
     const role = Role.Admin;

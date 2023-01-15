@@ -1,6 +1,8 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import * as passport from 'passport';
+import { CreateLdapUserDto } from 'src/users/dtos/create-ldap-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,4 +48,21 @@ export class AuthService {
 
     return user;
   }
+
+  async ldapLogin() {
+    passport.authenticate('ldap', { session: false });
+  }
+
+  // async ldapSignUp(user: CreateLdapUserDto) {
+  //   const u = await this.usersService.create(user.username);
+  //   if (!u) {
+  //     await this.usersService.addUser(user);
+  //     const { result } = user;
+  //     return result;
+  //   } else {
+  //     throw new NotAcceptableException('user already exists');
+  //   }
+
+  //   return null;
+  // }
 }

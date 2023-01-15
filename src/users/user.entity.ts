@@ -38,6 +38,9 @@ export class User {
   @Exclude()
   role: Role;
 
+  @Column({ default: false })
+  isFromLdap: boolean;
+
   // @Column()
   // role: string;
 
