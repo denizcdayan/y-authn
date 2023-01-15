@@ -14,7 +14,7 @@ export class AuthService {
     const user = await this.usersService.findOne(username);
     if (user && user.password === pass) {
       console.log('in AuthService.validateUser() ---> user validated');
-      const { password, email, roles, ...result } = user; // do not send password
+      const { password, email, role, ...result } = user; // do not send password
       return result;
     }
     console.log('in AuthService.validateUser() ---> user NOT validated');
@@ -22,35 +22,28 @@ export class AuthService {
   }
 
   async getUserRole(username: string) {
-    console.log('in AuthService.getUserRole()');
-    const user = await this.usersService.findOne(username);
-    if (user) {
-      console.log('in AuthService.getUserRole(), user roles are: ', user.roles);
-      return user.roles;
-    }
-    return null;
+    // console.log('in AuthService.getUserRole()');
+    // const user = await this.usersService.findOne(username);
+    // if (user) {
+    //   console.log('in AuthService.getUserRole(), user roles are: ', user.roles);
+    //   return user.roles;
+    // }
+    // return null;
+
+    return this.usersService.getRole(username);
   }
 
-  async signup(user: any) {
-    console.log('in AuthService.signup(), user: ', user);
-
-    const u = await this.usersService.findOne(user.username);
-    if (!u) {
-      await this.usersService.addUser(user);
-      const { password, ...result } = user;
-      return result;
-    }
-
-    return null;
-  }
-
-  async login(user: any) {
-    console.log('in AuthService.login(), user: ', user);
-
-    const payload = { username: user.username, sub: user.userId };
+  async login(username: string) {
+    const payload = { username: username };
 
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async findUser(username: string) {
+    const user = await this.usersService.findOne(username);
+
+    return user;
   }
 }

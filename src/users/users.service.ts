@@ -1,55 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from 'src/auth/enums/role.enum';
-
-// This should be a real class/interface representing a user entity
-export type User = {
-  userId: number;
-  username: string;
-  email: string;
-  password: string;
-  roles: Role;
-};
-
-export class CreateUserDto {
-  username: string;
-  email: string;
-  password: string;
-}
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
-  private users = [
-    {
-      userId: 1,
-      username: 'john',
-      email: 'john@mail.com',
-      password: 'changeme',
-      roles: Role['Admin'],
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      email: 'maria@mail.com',
-      password: 'guess',
-      roles: Role['User'],
-    },
-  ];
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  async findOne(username: string): Promise<User | undefined> {
-    console.log('inside UsersService.findOne()');
-    return this.users.find((user) => user.username === username);
+  async findOne(username: string) {
+    return this.repo.findOneBy({ username });
   }
 
-  async create() {
-    return console.log('inside UsersService.create()');
+  async find(email: string) {
+    return this.repo.find({ where: { email } });
   }
 
-  async addUser(newUser: User) {
-    console.log('inside UsersService.addUser()');
-    newUser.userId = this.users.length + 1;
-    newUser.roles = Role.User;
-    this.users.push(newUser);
-    console.log(this.users);
-    return true;
+  async update(username: string, attrs: Partial<User>) {
+    const user = await this.findOne(username);
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    Object.assign(user, attrs);
+    return this.repo.save(user);
+  }
+
+  async remove(username: string) {
+    const user = await this.findOne(username);
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+    return this.repo.remove(user);
+  }
+
+  async create(username: string, email: string, password: string) {
+    const user = this.repo.create({ username, email, password });
+
+    return await this.repo.save(user);
+  }
+
+  // TODO: delete this later
+  async createAdmin(username: string, email: string, password: string) {
+    const role = Role.Admin;
+
+    const user = this.repo.create({
+      username,
+      email,
+      password,
+      role,
+    });
+
+    return await this.repo.save(user);
+  }
+
+  async getRole(username: string) {
+    const user = await this.findOne(username);
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user.role;
   }
 }

@@ -1,58 +1,92 @@
-// import { Controller, Get } from '@nestjs/common';
-// import { AppService } from './app.service';
-
-// @Controller()
-// export class AppController {
-//   constructor(private readonly appService: AppService) {}
-
-//   @Get()
-//   getHello(): string {
-//     return this.appService.getHello();
-//   }
-// }
-
 import {
   Controller,
   Request,
   Post,
+  Delete,
+  Patch,
+  Query,
   UseGuards,
   Get,
   Body,
+  Param,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  NotFoundException,
 } from '@nestjs/common';
+
 // import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Roles } from './auth/decorators/roles.decorator';
 import { Role } from './auth/enums/role.enum';
-// import { CreateUserDto } from './users/create-user.dto';
 import { RolesGuard } from './auth/guards/roles.guard';
-import { UsersModule } from './users/users.module';
 
-// @UseGuards(RolesGuard)
+import { CreateUserDto } from './users/dtos/create-user.dto';
+import { UpdateUserDto } from './users/dtos/update-user.dto';
+import { LoginUserDto } from './users/dtos/login-user.dto';
+import { UsersService } from './users/users.service';
+
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {}
 
   // @UseGuards(LocalAuthGuard)
   @Post('signup')
-  async signup(@Request() req) {
-    console.log('in AppController.login(), user.email: ', req.body.email);
-    return this.authService.signup(req.body);
+  async signup(@Body() body: CreateUserDto) {
+    return this.usersService.create(body.username, body.email, body.password);
+  }
+
+  @Post('supersignup') // TODO: remove this later
+  async supersignup(@Body() body: CreateUserDto) {
+    return this.usersService.createAdmin(
+      body.username,
+      body.email,
+      body.password,
+    );
   }
 
   @UseGuards(LocalAuthGuard) // returns user obj
-  @Post('auth/login')
-  async login(@Request() req) {
+  @Post('login')
+  async login(@Body() body: LoginUserDto) {
     console.log('in AppController.login()');
-    return this.authService.login(req.user);
+    return this.authService.login(body.username);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  async getProfile(@Request() req) {
-    console.log('in AppController.getProfile()');
-    return req.user;
+  @Get('/:username')
+  @UseInterceptors(ClassSerializerInterceptor) // to exclude password. see user.entity --> @Exclude()
+  async getProfile(@Param('username') username: string) {
+    const user = this.authService.findUser(username);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  @Roles(Role.Admin, Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get()
+  findAllUsers(@Query('email') email: string) {
+    return this.usersService.find(email);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Delete('/:username')
+  removeUser(@Param('username') username: string) {
+    return this.usersService.remove(username);
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('/:username')
+  updateUser(@Param('username') username: string, @Body() body: UpdateUserDto) {
+    return this.usersService.update(username, body);
   }
 
   // Dummy routes
