@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "6e51aafb-e9a2-499a-80b2-f0a14be13000",
+		"_postman_id": "bb241919-0fc0-493b-814c-acd879095b5b",
 		"name": "y-auth",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22034646"
 	},
 	"item": [
 		{
@@ -11,17 +12,28 @@
 				{
 					"name": "Admin only route",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/admin-only-route",
+							"raw": "http://localhost:3000/dummyroute/admin-only-endpoint",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"admin-only-route"
+								"dummyroute",
+								"admin-only-endpoint"
 							]
 						}
 					},
@@ -30,17 +42,28 @@
 				{
 					"name": "User only route",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user-only-route",
+							"raw": "http://localhost:3000/dummyroute/user-only-endpoint",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"user-only-route"
+								"dummyroute",
+								"user-only-endpoint"
 							]
 						}
 					},
@@ -49,17 +72,28 @@
 				{
 					"name": "All roles route",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/all-roles-route",
+							"raw": "http://localhost:3000/dummyroute/all-roles-endpoint",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"all-roles-route"
+								"dummyroute",
+								"all-roles-endpoint"
 							]
 						}
 					},
@@ -163,14 +197,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/profile",
+					"raw": "http://localhost:3000/user/dcadmin",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"profile"
+						"user",
+						"dcadmin"
 					]
 				}
 			},
@@ -194,7 +229,87 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"robert\",\n  \"password\": \"mypassword\",\n  \"email\": \"robert@mail.com\"\n}",
+					"raw": "{\n  \"username\": \"alicex\",\n  \"password\": \"myalicexpassword\",\n  \"email\": \"alicex@mail.com\",\n  \"role\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Super Sign Up (dc - admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"jwt\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"dcadmin\",\n  \"password\": \"mypassword\",\n  \"email\": \"dcadmin@mail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/supersignup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"supersignup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log In (dcadmin - Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"jwt\", pm.response.json().access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"dcadmin\",\n  \"password\": \"mypassword\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
